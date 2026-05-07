@@ -1,0 +1,81 @@
+-- =========================================
+-- SOULENCE DATABASE SETUP
+-- =========================================
+
+-- Create database
+CREATE DATABASE IF NOT EXISTS soulence_db;
+USE soulence_db;
+
+
+-- =========================================
+-- USERS TABLE
+-- Stores user accounts and profile info
+-- =========================================
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,        -- Unique user ID
+    username VARCHAR(50) NOT NULL,            -- Username
+    email VARCHAR(100),                       -- Email address
+    password VARCHAR(255) NOT NULL,           -- Hashed password
+    age INT,                                  -- Age
+    bio TEXT,                                 -- User bio
+    profile_pic VARCHAR(255),                 -- Profile image filename
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Account creation time
+    last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP,        -- Online tracking
+    is_typing TINYINT(1) DEFAULT 0,           -- Typing indicator
+    hobbies TEXT,                             -- User hobbies
+    looking_for VARCHAR(50),                  -- Preference/intent
+    birthday DATE                             -- Birthday
+);
+
+
+-- =========================================
+-- LIKES TABLE
+-- Stores who liked who
+-- =========================================
+CREATE TABLE likes (
+    id INT AUTO_INCREMENT PRIMARY KEY,        -- Like ID
+    sender_id INT NOT NULL,                   -- Who liked
+    receiver_id INT NOT NULL,                 -- Who got liked
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- When liked
+);
+
+
+-- =========================================
+-- MATCHES TABLE
+-- Created when 2 users like each other
+-- =========================================
+CREATE TABLE matches (
+    id INT AUTO_INCREMENT PRIMARY KEY,        -- Match ID
+    user1_id INT NOT NULL,                    -- First user
+    user2_id INT NOT NULL,                    -- Second user
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Match time
+);
+
+
+-- =========================================
+-- MESSAGES TABLE
+-- Stores chat messages + images
+-- =========================================
+CREATE TABLE messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,        -- Message ID
+    sender_id INT NOT NULL,                   -- Sender
+    receiver_id INT NOT NULL,                 -- Receiver
+    message TEXT,                             -- Text message
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Sent time
+    is_seen TINYINT(1) DEFAULT 0,             -- Seen status (0 = sent, 1 = seen)
+    image VARCHAR(255)                        -- Image filename
+);
+
+
+-- =========================================
+-- REPORTS TABLE
+-- Stores user reports/complaints
+-- =========================================
+CREATE TABLE reports (
+    id INT AUTO_INCREMENT PRIMARY KEY,        -- Report ID
+    reporter_id INT NOT NULL,                 -- Who reported
+    reported_id INT NOT NULL,                 -- Who was reported
+    reason TEXT NOT NULL,                     -- Reason for report
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- When reported
+    status VARCHAR(20) NOT NULL DEFAULT 'pending'            -- Report status
+);
